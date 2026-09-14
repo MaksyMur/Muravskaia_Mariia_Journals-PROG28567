@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SquareSpawner : MonoBehaviour
 {
@@ -22,7 +23,8 @@ public class SquareSpawner : MonoBehaviour
     {
     
         {
-             Vector3 mousePosition = Input.mousePosition; //get mouse position in screen space
+            Vector2 mousePosition = Mouse.current.position.ReadValue(); //get mouse position in screen space
+
             Vector3 worldPosition = cam.ScreenToWorldPoint(
                 new Vector3(
                     mousePosition.x,
@@ -30,6 +32,7 @@ public class SquareSpawner : MonoBehaviour
                     cam.nearClipPlane
                 )
             );
+
              worldPosition.z = 0;
              
               float halfSize = squareSize / 2;
@@ -71,7 +74,7 @@ public class SquareSpawner : MonoBehaviour
 
 
 
-              if (Input.GetMouseButtonDown(0)) // left mouse button clicked
+              if (Mouse.current.leftButton.wasPressedThisFrame) // left mouse button clicked
         {
             Debug.DrawLine(
                 topLeft,
