@@ -5,16 +5,22 @@ public class SquareSpawner : MonoBehaviour
 
     Camera cam;
 
+     //Controls the size of the squares
+    public float squareSize = 1.0f;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    
     {
         cam = Camera.main;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // left mouse button clicked
+    
         {
              Vector3 mousePosition = Input.mousePosition; //get mouse position in screen space
             Vector3 worldPosition = cam.ScreenToWorldPoint(
@@ -25,11 +31,10 @@ public class SquareSpawner : MonoBehaviour
                 )
             );
              worldPosition.z = 0;
-              float size = 1.0f;
-              float halfSize = size / 2;
-               
-
              
+              float halfSize = squareSize / 2;
+               
+            
              
              //Four corners of the square
 
@@ -65,31 +70,73 @@ public class SquareSpawner : MonoBehaviour
             );
 
 
-             Debug.DrawLine(
+
+              if (Input.GetMouseButtonDown(0)) // left mouse button clicked
+        {
+            Debug.DrawLine(
                 topLeft,
                 topRight,
-                Color.white,
-                100.0f
-            );
-            Debug.DrawLine(
-                topRight,
-                bottomRight,
-                Color.white,
-                100.0f
-            );
-            Debug.DrawLine(
-                bottomRight,
-                bottomLeft,
-                Color.white,
-                100.0f
-            );
-            Debug.DrawLine(
-                bottomLeft,
-                topLeft,
                 Color.white,
                 100.0f
             );
 
+            Debug.DrawLine(
+                topRight,
+                bottomRight,
+                Color.white,
+                100.0f
+            );
+
+            Debug.DrawLine(
+                bottomRight,
+                bottomLeft,
+                Color.white,
+                100.0f
+            );
+
+            Debug.DrawLine(
+                bottomLeft,
+                topLeft,
+                Color.white,
+                100.0f
+            );
+        }
+
+        
+        
+        Color transparentWhite = new Color( 
+            1.0f,
+            1.0f,
+            1.0f,
+            0.5f
+        );
+
+        //Color transparentWhite = Color.red;
+
+        //Draw the transparent square 
+        Debug.DrawLine(
+            topLeft,
+            topRight,
+            transparentWhite
+        );
+
+        Debug.DrawLine(
+            topRight,
+            bottomRight,
+            transparentWhite
+        );
+
+        Debug.DrawLine(
+            bottomRight,
+            bottomLeft,
+            transparentWhite
+        );
+
+        Debug.DrawLine(
+            bottomLeft,
+            topLeft,
+            transparentWhite
+        );
 
         }
     }

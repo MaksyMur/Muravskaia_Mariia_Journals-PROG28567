@@ -374,6 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafb647bc9de24525a5bd0a60c2e9625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquareSpawner
+  squareSize: 5
 --- !u!1 &2079298622
 GameObject:
   m_ObjectHideFlags: 0
