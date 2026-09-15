@@ -591,7 +591,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 430498482}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b35551183adc43d58b60f8f7ada395d, type: 3}
   m_Name: 
@@ -860,6 +860,7 @@ GameObject:
   - component: {fileID: 1359633426}
   - component: {fileID: 1359633428}
   - component: {fileID: 1359633429}
+  - component: {fileID: 1359633430}
   m_Layer: 0
   m_Name: Vector Test
   m_TagString: Untagged
@@ -921,6 +922,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquareSpawner
   squareSize: 5
+--- !u!114 &1359633430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359633425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77b9b1ec574564e23b3387cac72ab925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pipeline
 --- !u!1 &1549445690
 GameObject:
   m_ObjectHideFlags: 0
