@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
 {
     WarpPlayer(enemyTransform, warpRatio);
 }
+
     } 
  
     public void SpawnBombAtOffset(Vector3 inOffset) //your 'boss' asks, you do 
@@ -107,7 +108,22 @@ public void WarpPlayer(Transform target, float ratio) // Warp the player towards
     transform.position = Vector3.Lerp(transform.position, target.position, ratio); // Lerp the player's position towards the target position based on the ratio
 }
 
+public void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids) // Detect asteroids within the specified range
+{
+    for (int i = 0; i < inAsteroids.Count; i++) // Loop through the list of asteroids
+    {
+        // Calculate distance between Player and current asteroid
+        float distance = Vector3.Distance(
+            transform.position,
+            inAsteroids[i].position
+        );
 
+        if (distance <= inMaxRange) // Check if the asteroid is within the specified range
+        {
+            Debug.DrawLine(transform.position, inAsteroids[i].position, Color.green); // Draw a green line to the asteroid
+        }
+    }
+}
 
 
 }
