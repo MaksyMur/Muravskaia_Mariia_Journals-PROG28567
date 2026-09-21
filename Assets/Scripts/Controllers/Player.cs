@@ -10,7 +10,8 @@ public class Player : MonoBehaviour
     public List<Transform> asteroidTransforms; 
 
     public float cornerBombDistance; // Distance from the player to spawn the bomb on a random corner
-     
+
+   public float warpRatio; // Ratio for warping the player towards the enemy position (0 to 1)  
  
     void Start() 
     { 
@@ -27,11 +28,15 @@ public class Player : MonoBehaviour
         SpawnBombAtOffset(bombOffset);
     }
 
-    if (Keyboard.current.cKey.wasPressedThisFrame)
+    if (Keyboard.current.cKey.wasPressedThisFrame) // Spawn a bomb on a random corner when the 'C' key is pressed
 {
     SpawnBombOnRandomCorner(cornerBombDistance);
 }
  
+ if (Keyboard.current.rKey.wasPressedThisFrame) // Warp the player towards the enemy position when the 'R' key is pressed
+{
+    WarpPlayer(enemyTransform, warpRatio);
+}
     } 
  
     public void SpawnBombAtOffset(Vector3 inOffset) //your 'boss' asks, you do 
@@ -89,6 +94,17 @@ else // Bottom-left corner
     direction = (Vector3.down + Vector3.left).normalized;
 }
 SpawnBombAtOffset(direction * inDistance); // Spawn a bomb at the calculated offset
+}
+
+
+public void WarpPlayer(Transform target, float ratio) // Warp the player towards the target position based on the ratio
+{
+    if (ratio > 1)
+    {
+        ratio = 1;
+    }
+
+    transform.position = Vector3.Lerp(transform.position, target.position, ratio); // Lerp the player's position towards the target position based on the ratio
 }
 
 
