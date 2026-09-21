@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 { 
     public Transform enemyTransform; 
     public GameObject bombPrefab; 
+    public Vector2 bombOffset;
     public List<Transform> asteroidTransforms; 
      
  
@@ -19,14 +20,14 @@ public class Player : MonoBehaviour
     // Update is called once per frame (this is your 'boss') 
     void Update() 
     { 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame) 
-        { 
-            SpawnBombAtOffset(Vector3.up); //spawn a bomb above the player 
-        } 
+        if (Keyboard.current.bKey.wasPressedThisFrame) 
+        {
+        SpawnBombAtOffset(bombOffset);
+    }
  
     } 
  
-    void SpawnBombAtOffset(Vector3 inOffset) //your 'boss' asks, you do 
+    public void SpawnBombAtOffset(Vector3 inOffset) //your 'boss' asks, you do 
     { 
        Instantiate(bombPrefab, transform.position + inOffset, Quaternion.identity); //spawn a bomb at the player's position plus the offset 
     } 
@@ -42,4 +43,23 @@ public class Player : MonoBehaviour
         return outVector; //return the normalized vector 
  
     } 
+
+
+//SpawnBombTrail (for loop repeat inNumberOfBombs) 
+// count distance ((i + 1) * inBombSpacing)
+   public void SpawnBombTrail(float inBombSpacing, int inNumberOfBombs)
+{
+    for (int i = 0; i < inNumberOfBombs; i++)
+    {
+        float distance = (i + 1) * inBombSpacing;
+
+        Vector3 offset = new Vector3(0, -distance, 0);
+
+        SpawnBombAtOffset(offset);
+    }
 }
+
+
+
+}
+
