@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public float cornerBombDistance; // Distance from the player to spawn the bomb on a random corner
 
    public float warpRatio; // Ratio for warping the player towards the enemy position (0 to 1)  
+
+   public float speed; // Speed for player movement
  
     void Start() 
     { 
@@ -38,8 +40,23 @@ public class Player : MonoBehaviour
     WarpPlayer(enemyTransform, warpRatio);
 }
 
+//MOVE PLAYER WITH MOUSE BUTTONS//
+if (Mouse.current.leftButton.isPressed)
+        {
+            PlayerMovement(new Vector2(-1, 0), 5f); // Move the player to the left when the left mouse button is pressed
+        }
+
+
+        if (Mouse.current.rightButton.isPressed)
+        {
+            PlayerMovement(new Vector2(1, 0), 5f); // Move the player to the right when the right mouse button is pressed
+        }
+
+
     } 
  
+    
+  
     public void SpawnBombAtOffset(Vector3 inOffset) //your 'boss' asks, you do 
     { 
        Instantiate(bombPrefab, transform.position + inOffset, Quaternion.identity); //spawn a bomb at the player's position plus the offset 
@@ -125,6 +142,16 @@ public void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids) // De
     }
 }
 
+// public void PlayerMovement(Vector3 velocity)
+// {
+//     transform.position += velocity * Time.deltaTime; // Move the player based on the velocity and deltaTime
+// }
+
+public void PlayerMovement(Vector2 inputVector, float speed) // Move the player based on the input vector and speed
+{
+    Vector3 velocity = new Vector3(inputVector.x, inputVector.y, 0) * speed; // Convert input vector to 3D velocity
+    transform.position += velocity * Time.deltaTime; // Move the player based on the velocity and deltaTime
+}
 
 }
 
