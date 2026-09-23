@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     WarpPlayer(enemyTransform, warpRatio);
 }
 
+    PlayerMovement(); // Call the PlayerMovement function to handle player movement based on input
 
 
     } 
