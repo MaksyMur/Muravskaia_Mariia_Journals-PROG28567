@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
    public float warpRatio; // Ratio for warping the player towards the enemy position (0 to 1)  
 
-   public float speed; // Speed for player movement
+   public float moveSpeed = 1f; // Speed for player movement
  
     void Start() 
     { 
@@ -40,17 +40,6 @@ public class Player : MonoBehaviour
     WarpPlayer(enemyTransform, warpRatio);
 }
 
-//MOVE PLAYER WITH MOUSE BUTTONS//
-if (Mouse.current.leftButton.isPressed)
-        {
-            PlayerMovement(new Vector2(-1, 0), 5f); // Move the player to the left when the left mouse button is pressed
-        }
-
-
-        if (Mouse.current.rightButton.isPressed)
-        {
-            PlayerMovement(new Vector2(1, 0), 5f); // Move the player to the right when the right mouse button is pressed
-        }
 
 
     } 
@@ -147,10 +136,29 @@ public void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids) // De
 //     transform.position += velocity * Time.deltaTime; // Move the player based on the velocity and deltaTime
 // }
 
-public void PlayerMovement(Vector2 inputVector, float speed) // Move the player based on the input vector and speed
+private void PlayerMovement() // Move the player based on the input vector and speed
 {
-    Vector3 velocity = new Vector3(inputVector.x, inputVector.y, 0) * speed; // Convert input vector to 3D velocity
-    transform.position += velocity * Time.deltaTime; // Move the player based on the velocity and deltaTime
+    //MOVE PLAYER WITH MOUSE BUTTONS//
+if (Keyboard.current.leftArrowKey.isPressed) 
+        {
+            transform.position += moveSpeed * Vector3.left; // Move the player to the left when the left arrow key is pressed
+        }
+    
+        if (Keyboard.current.rightArrowKey.isPressed)
+        {
+            transform.position += moveSpeed * Vector3.right; // Move the player to the right when the right arrow key is pressed
+        }
+
+        if (Keyboard.current.upArrowKey.isPressed)
+        {
+            transform.position += moveSpeed * Vector3.up; // Move the player up when the up arrow key is pressed
+        }
+
+        if (Keyboard.current.downArrowKey.isPressed)
+        {
+            transform.position += moveSpeed * Vector3.down; // Move the player down when the down arrow key is pressed
+        }
+
 }
 
 }
