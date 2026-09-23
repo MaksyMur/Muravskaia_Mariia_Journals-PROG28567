@@ -11,16 +11,27 @@ public class Player : MonoBehaviour
 
     public float cornerBombDistance; // Distance from the player to spawn the bomb on a random corner
 
-   public float warpRatio; // Ratio for warping the player towards the enemy position (0 to 1)  
+   public float warpRatio; // Ratio for warping the player towards the enemy position (0 to 1) 
 
-   public float moveSpeed = 1f; // Speed for player movement
+
+   public float maxSpeed = 1f; // Speed for player movement
+
+
+   public float accelerationTime = 1f; // Time it takes for the player to reach max speed
+   private float acceleration; // Acceleration value calculated based on maxSpeed and accelerationTime
+   private Vector3 velocity; // Current velocity of the player
  
     void Start() 
     { 
         Debug.Log(NormalSizeVector(new Vector2(3, 4))); //test the NormalizeVector function 
         Debug.Log(NormalSizeVector(new Vector2(-3, 2))); 
         Debug.Log(NormalSizeVector(new Vector2(1.5f, -3.5f))); 
+
+        //a = Δv / Δt;
+        acceleration = maxSpeed / accelerationTime; // Calculate the acceleration based on maxSpeed and accelerationTime
     } 
+
+
      
     // Update is called once per frame (this is your 'boss') 
     void Update() 
@@ -30,15 +41,18 @@ public class Player : MonoBehaviour
         SpawnBombAtOffset(bombOffset);
     }
 
+
     if (Keyboard.current.cKey.wasPressedThisFrame) // Spawn a bomb on a random corner when the 'C' key is pressed
 {
     SpawnBombOnRandomCorner(cornerBombDistance);
 }
+
  
  if (Keyboard.current.rKey.wasPressedThisFrame) // Warp the player towards the enemy position when the 'R' key is pressed
 {
     WarpPlayer(enemyTransform, warpRatio);
 }
+
 
     PlayerMovement(); // Call the PlayerMovement function to handle player movement based on input
 
@@ -152,38 +166,35 @@ private void PlayerMovement() // Move the player based on the input vector and s
     //MOVE PLAYER WITH MOUSE BUTTONS//
 if (Keyboard.current.leftArrowKey.isPressed)  
         {
-            transform.position += moveSpeed * Vector3.left; // Move the player to the left when the left arrow key is pressed
+            velocity += Time.deltaTime * acceleration * Vector3.left; // Move the player to the left when the left arrow key is pressed
         }
     
         if (Keyboard.current.rightArrowKey.isPressed)
         {
-            transform.position += moveSpeed * Vector3.right; // Move the player to the right when the right arrow key is pressed
+            velocity += Time.deltaTime * acceleration * Vector3.right; // Move the player to the right when the right arrow key is pressed
         }
 
         if (Keyboard.current.upArrowKey.isPressed)
         {
-            transform.position += moveSpeed * Vector3.up; // Move the player up when the up arrow key is pressed
+            velocity += Time.deltaTime * acceleration * Vector3.up; // Move the player up when the up arrow key is pressed
         }
 
         if (Keyboard.current.downArrowKey.isPressed)
         {
-            transform.position += moveSpeed * Vector3.down; // Move the player down when the down arrow key is pressed
+            velocity += Time.deltaTime * acceleration * Vector3.down; // Move the player down when the down arrow key is pressed
         }
+
+        //velocity = Vector3.ClampedMagnitude(velocity, maxSpeed); // Easier way to clamp the velocity to the maximum speed
+        if (velocity.magnitude > maxSpeed) // Clamp the velocity to the maximum speed
+        {
+            velocity = maxSpeed * velocity.normalized;
+        }
+
+        transform.position += velocity * Time.deltaTime; // Move the player based on the velocity and deltaTime
 
 }
 #endregion
 
-// private void AccelerationTime()
-//     {
-//         if (maxSpeed > 0)
-//         {
-//             maxSpeed -= Time.deltaTime; // Decrease maxSpeed over time
-//         }
-//         else
-//         {
-//             maxSpeed = 0; // Ensure maxSpeed doesn't go below 0
-//         }
-//     }
 
 }
 
