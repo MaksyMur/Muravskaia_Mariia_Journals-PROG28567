@@ -47,6 +47,7 @@ public class Player : MonoBehaviour
  
     
   
+    #region Spawn Bombs
     public void SpawnBombAtOffset(Vector3 inOffset) //your 'boss' asks, you do 
     { 
        Instantiate(bombPrefab, transform.position + inOffset, Quaternion.identity); //spawn a bomb at the player's position plus the offset 
@@ -63,10 +64,12 @@ public class Player : MonoBehaviour
         return outVector; //return the normalized vector 
  
     } 
+    #endregion
 
 
 //SpawnBombTrail (for loop repeat inNumberOfBombs) 
 // count distance ((i + 1) * inBombSpacing)
+   #region Spawn Bomb Trail
    public void SpawnBombTrail(float inBombSpacing, int inNumberOfBombs)
 {
     for (int i = 0; i < inNumberOfBombs; i++)
@@ -78,7 +81,9 @@ public class Player : MonoBehaviour
         SpawnBombAtOffset(offset);
     }
 }
+#endregion
 
+#region Spawn Bomb on Random Corner
 public void SpawnBombOnRandomCorner(float inDistance) 
 {
     int randomCorner = Random.Range(0, 4); // Generate a random number between 0 and 3
@@ -103,8 +108,9 @@ else // Bottom-left corner
 }
 SpawnBombAtOffset(direction * inDistance); // Spawn a bomb at the calculated offset
 }
+#endregion
 
-
+#region Warp Player
 public void WarpPlayer(Transform target, float ratio) // Warp the player towards the target position based on the ratio
 {
     if (ratio > 1)
@@ -114,7 +120,9 @@ public void WarpPlayer(Transform target, float ratio) // Warp the player towards
 
     transform.position = Vector3.Lerp(transform.position, target.position, ratio); // Lerp the player's position towards the target position based on the ratio
 }
+#endregion
 
+#region Detect Asteroids
 public void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids) // Detect asteroids within the specified range
 {
     for (int i = 0; i < inAsteroids.Count; i++) // Loop through the list of asteroids
@@ -131,16 +139,18 @@ public void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids) // De
         }
     }
 }
+#endregion
 
 // public void PlayerMovement(Vector3 velocity)
 // {
 //     transform.position += velocity * Time.deltaTime; // Move the player based on the velocity and deltaTime
 // }
 
+#region Player Movement
 private void PlayerMovement() // Move the player based on the input vector and speed
 {
     //MOVE PLAYER WITH MOUSE BUTTONS//
-if (Keyboard.current.leftArrowKey.isPressed) 
+if (Keyboard.current.leftArrowKey.isPressed)  
         {
             transform.position += moveSpeed * Vector3.left; // Move the player to the left when the left arrow key is pressed
         }
@@ -161,6 +171,19 @@ if (Keyboard.current.leftArrowKey.isPressed)
         }
 
 }
+#endregion
+
+// private void AccelerationTime()
+//     {
+//         if (maxSpeed > 0)
+//         {
+//             maxSpeed -= Time.deltaTime; // Decrease maxSpeed over time
+//         }
+//         else
+//         {
+//             maxSpeed = 0; // Ensure maxSpeed doesn't go below 0
+//         }
+//     }
 
 }
 
