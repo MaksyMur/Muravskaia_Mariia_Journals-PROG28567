@@ -20,6 +20,16 @@ public class Player : MonoBehaviour
    public float accelerationTime = 1f; // Time it takes for the player to reach max speed
    private float acceleration; // Acceleration value calculated based on maxSpeed and accelerationTime
    private Vector3 velocity; // Current velocity of the player
+
+
+   //Decceleration//
+   public float decelerationTime = 2f;
+
+    private bool wasMoving = false;
+    private float decelerationTimer = 0f;
+    private Vector3 velocityWhenReleased;
+
+
  
     void Start() 
     { 
@@ -161,37 +171,76 @@ public void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids) // De
 // }
 
 #region Player Movement
-private void PlayerMovement() // Move the player based on the input vector and speed
+public void PlayerMovement()
 {
-    //MOVE PLAYER WITH MOUSE BUTTONS//
-if (Keyboard.current.leftArrowKey.isPressed)  
-        {
-            velocity += Time.deltaTime * acceleration * Vector3.left; // Move the player to the left when the left arrow key is pressed
-        }
-    
-        if (Keyboard.current.rightArrowKey.isPressed)
-        {
-            velocity += Time.deltaTime * acceleration * Vector3.right; // Move the player to the right when the right arrow key is pressed
-        }
+    bool movementInput = false;
 
-        if (Keyboard.current.upArrowKey.isPressed)
+    //MOVE PLAYER WITH ARROW KEYS//
+    if (Keyboard.current.leftArrowKey.isPressed)
+    {
+        velocity += Time.deltaTime * acceleration * Vector3.left;
+        movementInput = true;
+    }
+
+    if (Keyboard.current.rightArrowKey.isPressed)
+    {
+        velocity += Time.deltaTime * acceleration * Vector3.right;
+        movementInput = true;
+    }
+
+    if (Keyboard.current.upArrowKey.isPressed)
+    {
+        velocity += Time.deltaTime * acceleration * Vector3.up;
+        movementInput = true;
+    }
+
+    if (Keyboard.current.downArrowKey.isPressed)
+    {
+        velocity += Time.deltaTime * acceleration * Vector3.down;
+        movementInput = true;
+    }
+
+    // Clamp velocity to maximum speed
+    if (velocity.magnitude > maxSpeed)
+    {
+        velocity = maxSpeed * velocity.normalized;
+    }
+
+    // Player is pressing a movement key
+    if (movementInput)
+    {
+        wasMoving = true;
+        decelerationTimer = 0f;
+    }
+    // Player just released the movement keys
+    else if (wasMoving)
+    {
+        velocityWhenReleased = velocity;
+        decelerationTimer = 0f;
+        wasMoving = false;
+    }
+
+    // Slow the player down after releasing the input
+    if (!movementInput && velocity.magnitude > 0)
+    {
+        decelerationTimer += Time.deltaTime;
+
+        float ratio = decelerationTimer / decelerationTime;
+
+        velocity = Vector3.Lerp(
+            velocityWhenReleased,
+            Vector3.zero,
+            ratio
+        );
+
+        // Stop completely when deceleration time is reached
+        if (decelerationTimer >= decelerationTime)
         {
-            velocity += Time.deltaTime * acceleration * Vector3.up; // Move the player up when the up arrow key is pressed
+            velocity = Vector3.zero;
         }
+    }
 
-        if (Keyboard.current.downArrowKey.isPressed)
-        {
-            velocity += Time.deltaTime * acceleration * Vector3.down; // Move the player down when the down arrow key is pressed
-        }
-
-        //velocity = Vector3.ClampedMagnitude(velocity, maxSpeed); // Easier way to clamp the velocity to the maximum speed
-        if (velocity.magnitude > maxSpeed) // Clamp the velocity to the maximum speed
-        {
-            velocity = maxSpeed * velocity.normalized;
-        }
-
-        transform.position += velocity * Time.deltaTime; // Move the player based on the velocity and deltaTime
-
+    transform.position += velocity * Time.deltaTime;
 }
 #endregion
 
