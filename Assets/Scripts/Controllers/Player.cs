@@ -9,6 +9,12 @@ public class Player : MonoBehaviour
     public Vector2 bombOffset;
     public List<Transform> asteroidTransforms; 
 
+
+    //Enemy Detection
+    public int circlePoints = 8;
+    public float radius = 3f;
+
+
     public float cornerBombDistance; // Distance from the player to spawn the bomb on a random corner
 
    public float warpRatio; // Ratio for warping the player towards the enemy position (0 to 1) 
@@ -65,6 +71,8 @@ public class Player : MonoBehaviour
 
 
     PlayerMovement(); // Call the PlayerMovement function to handle player movement based on input
+
+    EnemyDetection(); // Call the EnemyDetection function to detect enemies within the specified radius
 
 
     } 
@@ -244,6 +252,53 @@ public void PlayerMovement()
 }
 #endregion
 
+#region Enemy Detection
 
+public void EnemyDetection()
+{
+    float angleStep = 360f / circlePoints;
+
+    Color circleColor = Color.green; // Default color for the circle
+    // Draw the circle and check if the enemy is inside it
+    for (int i = 0; i < circlePoints; i++)
+    {
+        float angle = i * angleStep * Mathf.Deg2Rad;
+    // Calculate the position of the point on the circle
+    float x = radius * Mathf.Cos(angle);
+    float y = radius * Mathf.Sin(angle);
+    
+    // Create a point on the circle relative to the player's position
+        Vector3 point = new Vector3(x, y, 0) + transform.position;
+        float nextAngle = (i + 1) * angleStep * Mathf.Deg2Rad;
+
+    // Calculate the position of the next point on the circle
+        float nextX = radius * Mathf.Cos(nextAngle);
+        float nextY = radius * Mathf.Sin(nextAngle);
+
+        Vector3 nextPoint = new Vector3(nextX, nextY, 0) + transform.position;
+
+        //draw point to next point
+        Debug.DrawLine(point, nextPoint, circleColor);
+
+        float distance = Vector3.Distance(transform.position, enemyTransform.position);
+
+        //check if enemy id inside the circle
+        if (distance <= radius)
+        {
+            circleColor = Color.red;
+        }
+        else
+        {
+            circleColor = Color.green;
+        }
+    }
+    
+    }
+    #endregion
 }
+
+
+
+
+
 
