@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 { 
     public Transform enemyTransform; 
     public GameObject bombPrefab; 
+    public GameObject powerupPrefab;
     public Vector2 bombOffset;
     public List<Transform> asteroidTransforms; 
 
@@ -73,6 +74,12 @@ public class Player : MonoBehaviour
     PlayerMovement(); // Call the PlayerMovement function to handle player movement based on input
 
     EnemyDetection(); // Call the EnemyDetection function to detect enemies within the specified radius
+
+    if(Keyboard.current.pKey.wasPressedThisFrame) // Spawn power-ups in a circle around the player when the 'P' key is pressed
+    {
+        SpawnPowerUps(radius, 5); // Spawn 5 power-ups in a circle around the player
+
+    }
 
 
     } 
@@ -295,6 +302,32 @@ public void EnemyDetection()
     
     }
     #endregion
+
+#region Spawn PowerUps
+
+public void SpawnPowerUps(float radius, int numberOfPowerups)
+{
+float angleStep = 360f / numberOfPowerups;
+for (int i = 0; i < numberOfPowerups; i++)
+{
+    float angle = i * angleStep * Mathf.Deg2Rad;
+
+    // Calculate the position of the powerup on the circle
+    float x = radius * Mathf.Cos(angle);
+    float y = radius * Mathf.Sin(angle);
+
+    Vector3 powerupPosition = new Vector3(x, y, 0) + transform.position;
+
+    // Instantiate the powerup prefab at the calculated position
+    Instantiate(powerupPrefab, powerupPosition, Quaternion.identity);
+}
+}
+#endregion
+
+
+
+
+    
 }
 
 
