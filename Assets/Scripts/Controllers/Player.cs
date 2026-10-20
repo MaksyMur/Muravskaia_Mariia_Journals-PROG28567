@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
         SpawnPowerUps(radius, 5); // Spawn 5 power-ups in a circle around the player
 
     }
-
+        //PlayerRotation();
 
     } 
  
@@ -324,11 +324,40 @@ for (int i = 0; i < numberOfPowerups; i++)
 }
 #endregion
 
+// #region Player Rotation
+// private void PlayerRotation()
+//     {
+//         if (velocity.magnitude == 0) return; // If the player is not moving, do not rotate
+//         float deltaAngle = ComputeShortAngle(transform.up, velocity); // Calculate the angle between the player's up direction and the velocity direction
+//         if (deltaAngle == 0) return; // If the angle is zero, do not rotate
+
+//         float rotateDirection = Mathf.Sign(deltaAngle); // Determine the direction to rotate based on the
+//         float rotationStep = angularSpeed * Time.deltaTime; // Calculate the rotation step based on the angular speed and delta time
+
+//         if(rotationStep > Mathf.Abs(deltaAngle)) // Check if the rotation step is greater than the absolute value of the angle
+//         {
+//             transform.Rotate(0, 0, rotationStep * rotationDirection); // Rotate the player by the remaining angle to face the velocity direction
+//         }
+//         else
+//         {
+//             transform.Rotate(0, 0, deltaAngle); // Rotate the player by the rotation step in the determined direction
+//         }
+        
+           
+//     }
+//     #endregion
 
 
+//     private float ComputeShortAngle(Vector3 a, Vector3 b)
+//     {
+//         float angleA = Mathf.Atan2(a.y, a.x) * Mathf.Rad2Deg; // Calculate the angle of vector a in degrees
+//         float angleB = Mathf.Atan2(b.y, b.x) * Mathf.Rad2Deg; // Calculate the angle of vector b in degrees
+
+//         return Mathf.DeltaAngle(angleA, angleB); // Return the shortest angle between the two angles
+//     }
 
     
-}
+// }
 
 
 
