@@ -322,6 +322,7 @@ for (int i = 0; i < numberOfPowerups; i++)
     Instantiate(powerupPrefab, powerupPosition, Quaternion.identity);
 }
 }
+}
 #endregion
 
 // #region Player Rotation
