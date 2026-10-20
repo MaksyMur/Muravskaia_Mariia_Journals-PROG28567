@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public class Meteor : MonoBehaviour
 {
@@ -8,7 +9,11 @@ public class Meteor : MonoBehaviour
     private float spawnTimer = 0f;
 
     public GameObject meteorPrefab; // Prefab for the meteor object
-   private List<GameObject> meteors = new List<GameObject>(); // List to store the instantiated meteor objects
+
+   public List<Vector3> meteorDirections = new List<Vector3>(); 
+
+
+   public List<GameObject> meteors = new List<GameObject>(); // List to store the instantiated meteor objects
 
    private List<float> rotationSpeeds = new List<float>(); // List to store the rotation speeds for each meteor
 
@@ -35,6 +40,8 @@ public class Meteor : MonoBehaviour
 
         GameObject meteor = Instantiate(meteorPrefab, spawnPosition, Quaternion.identity); // Instantiate the meteor prefab at the spawn position with no rotation
         meteors.Add(meteor);
+
+        meteorDirections.Add(direction);
     }
 
     // Update is called once per frame
@@ -43,7 +50,7 @@ public class Meteor : MonoBehaviour
     // Move and rotate every meteor each frame
     for (int i = 0; i < meteors.Count; i++)
     {
-        meteors[i].transform.position += direction * speed * Time.deltaTime; // Move the meteor downwards and to the left based on the direction and speed
+        meteors[i].transform.position += meteorDirections[i] * speed * Time.deltaTime; // Move the meteor downwards and to the left based on the direction and speed
 
         meteors[i].transform.Rotate(Vector3.forward, rotationSpeeds[i] * Time.deltaTime); // Rotate the meteor around the z-axis based on its rotation speed
     }
@@ -66,6 +73,7 @@ public class Meteor : MonoBehaviour
         GameObject meteor = Instantiate(meteorPrefab, spawnPosition, Quaternion.identity); // Instantiate the meteor prefab at the spawn position with no rotation
 
         meteors.Add(meteor);
+        meteorDirections.Add(direction);
         rotationSpeeds.Add(rotationSpeed);
     }
 }

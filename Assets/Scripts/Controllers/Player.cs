@@ -4,6 +4,21 @@ using UnityEngine.InputSystem;
  
 public class Player : MonoBehaviour 
 { 
+  
+//////////SHIELD/////
+public GameObject shield;
+public float shieldDuration = 3f;
+private float shieldTimer = 0f;
+
+
+public Meteor meteorSpawner; // Reference to the Meteor script for spawning meteors
+public float shieldRadius = 3f;
+public float pushSpeed = 8f;
+/// ////////
+
+
+
+
     public Transform enemyTransform; 
     public GameObject bombPrefab; 
     public GameObject powerupPrefab;
@@ -40,6 +55,8 @@ public class Player : MonoBehaviour
  
     void Start() 
     { 
+
+
         Debug.Log(NormalSizeVector(new Vector2(3, 4))); //test the NormalizeVector function 
         Debug.Log(NormalSizeVector(new Vector2(-3, 2))); 
         Debug.Log(NormalSizeVector(new Vector2(1.5f, -3.5f))); 
@@ -53,6 +70,31 @@ public class Player : MonoBehaviour
     // Update is called once per frame (this is your 'boss') 
     void Update() 
     { 
+
+        if (Keyboard.current.gKey.wasPressedThisFrame) // Activate the shield when the 'G' key is pressed
+        {
+            shield.SetActive(true); // Enable the shield GameObject
+            shieldTimer = 0f; // Reset the shield timer
+        }
+        if (shield.activeSelf) // Check if the shield is currently active
+        {
+            shieldTimer += Time.deltaTime; // Increment the shield timer by the time elapsed since the last frame
+
+            if (shieldTimer >= shieldDuration) // Check if the shield duration has been exceeded
+            {
+                shield.SetActive(false); // Disable the shield GameObject
+            }
+            else
+            {
+                PushMeteors(); // Call the PushMeteors function to push meteors away from the player while the shield is active
+            }
+        }
+
+
+
+
+
+
         if (Keyboard.current.bKey.wasPressedThisFrame) 
         {
         SpawnBombAtOffset(bombOffset);
@@ -322,7 +364,42 @@ for (int i = 0; i < numberOfPowerups; i++)
     Instantiate(powerupPrefab, powerupPosition, Quaternion.identity);
 }
 }
+
+void PushMeteors()
+{
+    for (int i = 0; i < meteorSpawner.meteors.Count; i++)
+    {
+        GameObject meteor = meteorSpawner.meteors[i];
+
+        // Calculate distance between player and meteor
+        float distance = Vector3.Distance(
+            transform.position,
+            meteor.transform.position
+        );
+
+        // Check if meteor is within shield radius
+        if (distance <= shieldRadius)
+        {
+            // Calculate direction away from player
+            Vector3 pushDirection =
+                (meteor.transform.position - transform.position).normalized;
+
+            // Change the meteor's movement direction
+            meteorSpawner.meteorDirections[i] = pushDirection;
+        }
+    }
 }
+
+
+
+
+
+}
+
+
+
+
+
 #endregion
 
 // #region Player Rotation
